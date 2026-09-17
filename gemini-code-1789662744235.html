@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShoulderGuard - Rehabilitación y Fisioterapia de Hombro</title>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --azul-oscuro: #0D47A1;
+            --azul-principal: #1565C0;
+            --azul-claro: #42A5F5;
+            --celeste: #90CAF9;
+            --blanco: #FFFFFF;
+            --fondo: #F4F8FC;
+            --texto: #263238;
+            --verde: #43A047;
+            --rojo: #E53935;
+            --sombra-suave: 0 10px 25px -5px rgba(21, 101, 192, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+            --sombra-fuerte: 0 20px 25px -5px rgba(13, 71, 161, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --borde-radio: 16px;
+            --transicion: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--fondo); color: var(--texto); line-height: 1.6; overflow-x: hidden; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transicion);
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--azul-principal), var(--azul-oscuro));
+            color: var(--blanco);
+            box-shadow: 0 4px 14px rgba(21, 101, 192, 0.35);
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(21, 101, 192, 0.45); }
+
+        .btn-secondary { background: var(--blanco); color: var(--azul-principal); border: 2px solid var(--celeste); }
+        .btn-secondary:hover { background: var(--celeste); color: var(--azul-oscuro); transform: translateY(-2px); }
+
+        .btn-danger { background: var(--rojo); color: var(--blanco); }
+
+        .section-padding { padding: 80px 0; }
+        .section-title { text-align: center; margin-bottom: 48px; }
+        .section-title h2 { font-size: 2.25rem; color: var(--azul-oscuro); font-weight: 700; margin-bottom: 12px; }
+        .section-title p { color: #546E7A; font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        .badge {
+            background-color: rgba(66, 165, 245, 0.15);
+            color: var(--azul-principal);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(144, 202, 249, 0.3);
+        }
+
+        .navbar-container { display: flex; justify-content: space-between; align-items: center; height: 75px; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.4rem; font-weight: 700; color: var(--azul-oscuro); text-decoration: none; }
+        .logo i { color: var(--azul-principal); font-size: 1.6rem; }
+        
+        .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--texto); font-weight: 500; font-size: 0.95rem; transition: var(--transicion); }
+        .nav-links a:hover { color: var(--azul-principal); }
+
+        .profesional-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--fondo);
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid var(--celeste);
+        }
+
+        /* MODALES Y FORMULARIOS DE AUTENTICACIÓN / DIAGNÓSTICO */
+        .auth-card, .dashboard-card {
+            background: var(--blanco);
+            border-radius: var(--borde-radio);
+            padding: 32px;
+            box-shadow: var(--sombra-fuerte);
+            max-width: 550px;
+            margin: 0 auto 40px;
+            border: 1px solid rgba(144, 202, 249, 0.4);
+        }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--azul-oscuro); font-size: 0.9rem; }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #CFD8DC;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transicion);
+        }
+        .form-control:focus { border-color: var(--azul-principal); box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.15); }
+
+        /* DASHBOARD DEL PACIENTE */
+        .patient-welcome {
+            background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-principal));
+            color: white;
+            padding: 24px;
+            border-radius: var(--borde-radio);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .history-item {
+            background: var(--fondo);
+            border-left: 4px solid var(--azul-principal);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .history-item h4 { color: var(--azul-oscuro); margin-bottom: 6px; }
+        .history-item p { font-size: 0.9rem; color: #455A64; margin-bottom: 4px; }
+        .history-item .date { font-size: 0.75rem; color: #90A4AE; }
+
+        /* SECCIÓN HERO */
+        .hero { padding: 60px 0 20px; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .hero-content h1 { font-size: 3rem; line-height: 1.15; color: var(--azul-oscuro); margin-bottom: 16px; }
+
+        .hero-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+        .feature-card-sm { background: var(--blanco); padding: 20px; border-radius: var(--borde-radio); box-shadow: var(--sombra-suave); display: flex; align-items: center; gap: 16px; }
+
+        .benefits-grid, .exercises-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .benefit-card, .exercise-card { background: var(--blanco); padding: 24px; border-radius: var(--borde-radio); box-shadow: var(--sombra-suave); }
+
+        /* FOOTER */
+        footer { background: var(--azul-oscuro); color: white; padding: 40px 0 20px; margin-top: 60px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 20px; }
+
+        @media (max-width: 768px) {
+            .hero-grid, .footer-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-shield-halved"></i>
+                SHOULDERGUARD
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#autoevaluacion">Diagnóstico</a></li>
+                <li><a href="#ejercicios">Ejercicios</a></li>
+                <li><a href="#panel-paciente">Mi Perfil</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="profesional-tag">
+                    <i class="fa-solid fa-user-doctor" style="color: var(--azul-principal);"></i>
+                    <div style="display: flex; flex-direction: column; line-height: 1.1;">
+                        <span style="font-weight: 700; font-size: 0.8rem; color: var(--azul-oscuro);">Mateo Guerrero</span>
+                        <span style="font-size: 0.7rem; color: #546E7A;">Fisioterapeuta</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- INICIO (HERO) -->
+    <section id="inicio" class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div>
+                    <span class="badge">Plataforma Digital Kinésica</span>
+                    <h1>SHOULDERGUARD</h1>
+                    <p style="font-size: 1.2rem; font-weight: 600; color: var(--azul-principal); margin-bottom: 12px;">“Protege tu movimiento, recupera tu fuerza.”</p>
+                    <p style="color: #455A64; margin-bottom: 24px;">Regístrate como paciente para realizar tu autoevaluación, enviar tus síntomas y llevar el control privado de tu rehabilitación.</p>
+                    <div style="display: flex; gap: 16px;">
+                        <a href="#cuenta" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i> REGISTRARSE / INICIAR SESIÓN</a>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <div style="background: white; padding: 30px; border-radius: var(--borde-radio); box-shadow: var(--sombra-fuerte);">
+                        <i class="fa-solid fa-notes-medical" style="font-size: 4rem; color: var(--azul-principal); margin-bottom: 16px;"></i>
+                        <h3 style="color: var(--azul-oscuro);">Atención Personalizada</h3>
+                        <p style="font-size: 0.9rem; color: #546E7A; margin-top: 8px;">Tus datos de diagnóstico solo son accesibles desde tu sesión de usuario para garantizar tu privacidad médica.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-features">
+                <div class="feature-card-sm">
+                    <i class="fa-solid fa-lock" style="font-size: 1.8rem; color: var(--azul-principal);"></i>
+                    <div>
+                        <h4 style="color: var(--azul-oscuro);">Perfil Privado</h4>
+                        <p style="font-size: 0.8rem; color: #546E7A;">Acceso seguro con tu contraseña</p>
+                    </div>
+                </div>
+                <div class="feature-card-sm">
+                    <i class="fa-solid fa-stethoscope" style="font-size: 1.8rem; color: var(--azul-principal);"></i>
+                    <div>
+                        <h4 style="color: var(--azul-oscuro);">Registro de Sintomas</h4>
+                        <p style="font-size: 0.8rem; color: #546E7A;">Reporta dolor y limitaciones</p>
+                    </div>
+                </div>
+                <div class="feature-card-sm">
+                    <i class="fa-solid fa-chart-line" style="font-size: 1.8rem; color: var(--azul-principal);"></i>
+                    <div>
+                        <h4 style="color: var(--azul-oscuro);">Seguimiento Clinico</h4>
+                        <p style="font-size: 0.8rem; color: #546E7A;">Historial privado de tus pruebas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SISTEMA DE REGISTRO / LOGIN -->
+    <section id="cuenta" class="section-padding">
+        <div class="container">
+            <!-- MODO SIN SESIÓN (REGISTRO / LOGIN) -->
+            <div id="authContainer">
+                <div class="section-title">
+                    <span class="badge">Acceso de Pacientes</span>
+                    <h2>Inicia Sesión o Regístrate</h2>
+                    <p>Crea tu cuenta con tu nombre completo y contraseña para realizar tu autoevaluación.</p>
+                </div>
+
+                <div class="auth-card">
+                    <div style="display: flex; gap: 10px; margin-bottom: 24px;">
+                        <button id="tabLogin" class="btn btn-primary" style="flex: 1;" onclick="switchAuthTab('login')">Iniciar Sesión</button>
+                        <button id="tabRegister" class="btn btn-secondary" style="flex: 1;" onclick="switchAuthTab('register')">Registrarse</button>
+                    </div>
+
+                    <!-- FORMULARIO DE INICIO DE SESIÓN -->
+                    <form id="formLogin" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-user"></i> Nombre completo del Paciente</label>
+                            <input type="text" id="loginNombre" class="form-control" placeholder="Ej. Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-key"></i> Contraseña</label>
+                            <input type="password" id="loginPass" class="form-control" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">ENTRAR A MI PERFIL</button>
+                    </form>
+
+                    <!-- FORMULARIO DE REGISTRO -->
+                    <form id="formRegister" onsubmit="handleRegister(event)" style="display: none;">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-id-card"></i> Nombre Completo</label>
+                            <input type="text" id="regNombre" class="form-control" placeholder="Ej. Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-envelope"></i> Correo o Teléfono de Contacto</label>
+                            <input type="text" id="regContacto" class="form-control" placeholder="096XXXXXXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-lock"></i> Crear Contraseña</label>
+                            <input type="password" id="regPass" class="form-control" placeholder="Mínimo 4 caracteres" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">CREAR MI CUENTA DE PACIENTE</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- MODO CON SESIÓN ACTIVA (DASHBOARD PRIVADO) -->
+            <div id="userDashboard" style="display: none;">
+                <div class="patient-welcome">
+                    <div>
+                        <h2 style="margin: 0; font-size: 1.8rem;" id="dashboardUserName">¡Bienvenido!</h2>
+                        <p style="margin: 0; opacity: 0.9; font-size: 0.95rem;">Panel Privado de Seguimiento Fisioterapéutico</p>
+                    </div>
+                    <button class="btn btn-danger" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</button>
+                </div>
+
+                <!-- FORMULARIO DE DIAGNÓSTICO -->
+                <div id="autoevaluacion" class="dashboard-card" style="max-width: 800px;">
+                    <h3 style="color: var(--azul-oscuro); margin-bottom: 12px;"><i class="fa-solid fa-clipboard-question"></i> Tomar Nuevo Diagnóstico / Reporte de Síntomas</h3>
+                    <p style="font-size: 0.9rem; color: #546E7A; margin-bottom: 24px;">Responde este cuestionario para registrar lo que sientes en tu hombro. Estos datos quedarán guardados de forma privada en tu historial.</p>
+
+                    <form onsubmit="guardarDiagnostico(event)">
+                        <div class="form-group">
+                            <label>1. Nivel de dolor actual (Escala 1 al 10):</label>
+                            <select id="diagDolor" class="form-control" required>
+                                <option value="1 - 3 (Leve)">1 - 3 (Leve)</option>
+                                <option value="4 - 6 (Moderado)">4 - 6 (Moderado)</option>
+                                <option value="7 - 10 (Intenso / Severo)">7 - 10 (Intenso / Severo)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>2. Describe exactamente lo que sientes en tu hombro:</label>
+                            <textarea id="diagSintomas" class="form-control" rows="3" placeholder="Ejemplo: Siento un pinchazo al levantar el brazo hacia arriba, molestia nocturna al dormir sobre el lado afectado..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>3. Movimientos restringidos o con dificultad:</label>
+                            <input type="text" id="diagLimitacion" class="form-control" placeholder="Ej. Dificultad para peinarme, abrocharme la ropa, levantar objetos pesados." required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-floppy-disk"></i> GUARDAR MI DIAGNÓSTICO</button>
+                    </form>
+                </div>
+
+                <!-- HISTORIAL PRIVADO DEL PACIENTE -->
+                <div class="dashboard-card" style="max-width: 800px;">
+                    <h3 style="color: var(--azul-oscuro); margin-bottom: 16px;"><i class="fa-solid fa-clock-rotate-left"></i> Mi Historial Médico Privado</h3>
+                    <div id="historyList">
+                        <!-- Se puebla dinámicamente con JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE EJERCICIOS -->
+    <section id="ejercicios" class="section-padding" style="background: var(--blanco);">
+        <div class="container">
+            <div class="section-title">
+                <span class="badge">Protocolo Kinésico</span>
+                <h2>Ejercicios Guiados para Hombro</h2>
+                <p>Realiza estos ejercicios basándote en las recomendaciones de tu fisioterapeuta.</p>
+            </div>
+
+            <div class="exercises-grid">
+                <div class="exercise-card">
+                    <i class="fa-solid fa-person-walking" style="font-size: 3rem; color: var(--azul-principal); margin-bottom: 12px;"></i>
+                    <h3 style="color: var(--azul-oscuro);">Pendulares de Codman</h3>
+                    <p style="font-size: 0.85rem; color: #546E7A; margin-top: 8px;">Movimiento suave para descompresión articular y alivio del dolor pasivo.</p>
+                </div>
+                <div class="exercise-card">
+                    <i class="fa-solid fa-child" style="font-size: 3rem; color: var(--azul-principal); margin-bottom: 12px;"></i>
+                    <h3 style="color: var(--azul-oscuro);">Retracción Escapular</h3>
+                    <p style="font-size: 0.85rem; color: #546E7A; margin-top: 8px;">Ejercicio de corrección postural y estabilización de la escápula.</p>
+                </div>
+                <div class="exercise-card">
+                    <i class="fa-solid fa-hand" style="font-size: 3rem; color: var(--azul-principal); margin-bottom: 12px;"></i>
+                    <h3 style="color: var(--azul-oscuro);">Rotación Externa</h3>
+                    <p style="font-size: 0.85rem; color: #546E7A; margin-top: 8px;">Fortalecimiento progresivo para Infraespinoso y Redondo Menor.</p>
+                </div>
+                <div class="exercise-card">
+                    <i class="fa-solid fa-arrow-up-from-ground-water" style="font-size: 3rem; color: var(--azul-principal); margin-bottom: 12px;"></i>
+                    <h3 style="color: var(--azul-oscuro);">Elevación Asistida</h3>
+                    <p style="font-size: 0.85rem; color: #546E7A; margin-top: 8px;">Ganancia paulatina de rango de movimiento activo sin dolor.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#" class="logo" style="color: white; margin-bottom: 12px;">
+                        <i class="fa-solid fa-shield-halved" style="color: var(--celeste);"></i> SHOULDERGUARD
+                    </a>
+                    <p style="font-size: 0.85rem; color: var(--celeste);">Plataforma privada de evaluación y seguimiento fisioterapéutico de lesiones del hombro.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 12px;">Contacto Fisioterapeuta</h4>
+                    <p style="font-size: 0.85rem; color: var(--celeste);"><i class="fa-solid fa-user-doctor"></i> Mateo Guerrero</p>
+                    <p style="font-size: 0.85rem; color: var(--celeste);"><i class="fa-solid fa-phone"></i> 0962114263</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 12px;">Aviso Legal</h4>
+                    <p style="font-size: 0.8rem; color: var(--celeste);">ShoulderGuard es una herramienta digital de apoyo y no sustituye la valoración médica presencial del fisioterapeuta.</p>
+                </div>
+            </div>
+            <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.8rem; color: var(--celeste);">
+                &copy; 2026 ShoulderGuard. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT PRIVADA -->
+    <script>
+        // Variables globales del sistema
+        let currentUser = null;
+
+        // Inicializar al cargar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            checkSession();
+        });
+
+        // Alternar pestañas de Registro / Login
+        function switchAuthTab(type) {
+            const formLogin = document.getElementById('formLogin');
+            const formRegister = document.getElementById('formRegister');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+
+            if(type === 'login') {
+                formLogin.style.display = 'block';
+                formRegister.style.display = 'none';
+                tabLogin.className = 'btn btn-primary';
+                tabRegister.className = 'btn btn-secondary';
+            } else {
+                formLogin.style.display = 'none';
+                formRegister.style.display = 'block';
+                tabLogin.className = 'btn btn-secondary';
+                tabRegister.className = 'btn btn-primary';
+            }
+        }
+
+        // REGISTRO DE PACIENTE
+        function handleRegister(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('regNombre').value.trim();
+            const contacto = document.getElementById('regContacto').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+
+            let users = JSON.parse(localStorage.getItem('sg_users')) || [];
+
+            // Validar si el paciente ya existe
+            if(users.some(u => u.nombre.toLowerCase() === nombre.toLowerCase())) {
+                alert("Ya existe un paciente registrado con este nombre. Por favor inicia sesión.");
+                return;
+            }
+
+            const newUser = {
+                id: 'paciente_' + Date.now(),
+                nombre: nombre,
+                contacto: contacto,
+                pass: pass
+            };
+
+            users.push(newUser);
+            localStorage.setItem('sg_users', JSON.stringify(users));
+
+            alert("¡Registro exitoso! Ahora inicia sesión con tus datos.");
+            switchAuthTab('login');
+            document.getElementById('loginNombre').value = nombre;
+            document.getElementById('formRegister').reset();
+        }
+
+        // INICIO DE SESIÓN
+        function handleLogin(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('loginNombre').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+
+            let users = JSON.parse(localStorage.getItem('sg_users')) || [];
+
+            const userFound = users.find(u => u.nombre.toLowerCase() === nombre.toLowerCase() && u.pass === pass);
+
+            if(userFound) {
+                currentUser = userFound;
+                localStorage.setItem('sg_session', JSON.stringify(currentUser));
+                updateUI();
+                alert("¡Bienvenido/a " + currentUser.nombre + "!");
+            } else {
+                alert("Nombre de paciente o contraseña incorrectos.");
+            }
+        }
+
+        // REVISAR SESIÓN ACTIVA
+        function checkSession() {
+            const activeSession = localStorage.getItem('sg_session');
+            if(activeSession) {
+                currentUser = JSON.parse(activeSession);
+                updateUI();
+            }
+        }
+
+        // CERRAR SESIÓN
+        function logout() {
+            localStorage.removeItem('sg_session');
+            currentUser = null;
+            document.getElementById('authContainer').style.display = 'block';
+            document.getElementById('userDashboard').style.display = 'none';
+            document.getElementById('formLogin').reset();
+        }
+
+        // ACTUALIZAR INTERFAZ
+        function updateUI() {
+            if(currentUser) {
+                document.getElementById('authContainer').style.display = 'none';
+                document.getElementById('userDashboard').style.display = 'block';
+                document.getElementById('dashboardUserName').textContent = "¡Hola, " + currentUser.nombre + "!";
+                cargarHistorial();
+            }
+        }
+
+        // GUARDAR DIAGNÓSTICO PRIVADO DEL PACIENTE
+        function guardarDiagnostico(e) {
+            e.preventDefault();
+            if(!currentUser) return;
+
+            const dolor = document.getElementById('diagDolor').value;
+            const sintomas = document.getElementById('diagSintomas').value.trim();
+            const limitacion = document.getElementById('diagLimitacion').value.trim();
+
+            const nuevoDiagnostico = {
+                fecha: new Date().toLocaleString(),
+                dolor: dolor,
+                sintomas: sintomas,
+                limitacion: limitacion
+            };
+
+            // Guardar diagnóstico bajo la clave única del usuario para privacidad estricta
+            const userKey = 'sg_diag_' + currentUser.id;
+            let diagnósticos = JSON.parse(localStorage.getItem(userKey)) || [];
+            diagnósticos.unshift(nuevoDiagnostico);
+
+            localStorage.setItem(userKey, JSON.stringify(diagnósticos));
+
+            alert("Tu diagnóstico ha sido guardado de forma segura en tu perfil.");
+            e.target.reset();
+            cargarHistorial();
+        }
+
+        // CARGAR ÚNICAMENTE LOS DATOS DEL PACIENTE ACTUAL
+        function cargarHistorial() {
+            if(!currentUser) return;
+
+            const userKey = 'sg_diag_' + currentUser.id;
+            const diagnósticos = JSON.parse(localStorage.getItem(userKey)) || [];
+            const historyList = document.getElementById('historyList');
+
+            if(diagnósticos.length === 0) {
+                historyList.innerHTML = '<p style="color: #78909C; font-size: 0.9rem;">Aún no has registrado ningún diagnóstico. Completa el formulario anterior.</p>';
+                return;
+            }
+
+            historyList.innerHTML = '';
+            diagnósticos.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'history-item';
+                card.innerHTML = `
+                    <h4><i class="fa-solid fa-notes-medical" style="color: var(--azul-principal);"></i> Diagnóstico #${diagnósticos.length - index}</h4>
+                    <p><strong>Nivel de Dolor:</strong> ${item.dolor}</p>
+                    <p><strong>Lo que sientes:</strong> "${item.sintomas}"</p>
+                    <p><strong>Limitaciones de movimiento:</strong> ${item.limitacion}</p>
+                    <span class="date"><i class="fa-solid fa-calendar"></i> Registrado el: ${item.fecha}</span>
+                `;
+                historyList.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
